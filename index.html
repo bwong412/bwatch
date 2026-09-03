@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horological Archive — 個人腕錶與珍藏典藏</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0d0d0d;
+            --card-bg: #161616;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent-color: #c5a059;
+            --border-color: #2a2a2a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.02em; }
+        header { padding: 100px 5% 60px; text-align: center; border-bottom: 1px solid var(--border-color); background: #141414; }
+        header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; font-weight: 600; margin-bottom: 15px; letter-spacing: 0.15em; color: #fff; }
+        header p { color: var(--text-secondary); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.3em; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 80px 5%; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: 0.4s; }
+        .card:hover { transform: translateY(-6px); border-color: var(--text-secondary); }
+        .card-image-wrapper { width: 100%; height: 320px; background-color: #1a1a1a; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
+        .card-image-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+        .brand-tag { position: absolute; top: 20px; left: 20px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-secondary); background: rgba(0,0,0,0.4); padding: 4px 10px; }
+        .card-content { padding: 30px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+        .model-number { font-size: 0.8rem; color: var(--accent-color); letter-spacing: 0.1em; margin-bottom: 8px; }
+        .card-title { font-size: 1.35rem; font-weight: 600; margin-bottom: 12px; color: #fff; font-family: 'Cinzel', serif; }
+        .card-specs { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
+        .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: auto; }
+        .price { font-size: 1.1rem; font-weight: 600; color: #fff; }
+        .official-link { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-primary); text-decoration: none; padding: 8px 16px; border: 1px solid var(--text-primary); transition: 0.3s; }
+        .official-link:hover { background-color: var(--text-primary); color: var(--bg-color); }
+        footer { text-align: center; padding: 60px 0; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>PERSONAL ARCHIVE</h1>
+        <p>Curated Horology & Precious Collection</p>
+    </header>
+    <div class="container">
+        <div class="grid">
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80"></div><div class="card-content"><div><div class="model-number">M91550-0005</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑39毫米<br>蛋白色及藍色錶面</p></div><div class="card-footer"><span class="price">HKD 17,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91550-0005" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=80"></div><div class="card-content"><div><div class="model-number">126334</div><h2 class="card-title">Datejust 41</h2><p class="card-specs">蠔式，41毫米，白金及鋼<br>藍色羅馬數字錶面</p></div><div class="card-footer"><span class="price">HKD 86,900</span><a href="https://www.rolex.com/en-hk/watches/datejust/m126334-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80"></div><div class="card-content"><div><div class="model-number">124300</div><h2 class="card-title">Oyster Perpetual 41</h2><p class="card-specs">蠔式，41毫米，蠔式鋼<br>黑色錶面</p></div><div class="card-footer"><span class="price">HKD 52,300</span><a href="https://www.rolex.com/en-hk/watches/oyster-perpetual/m124300-0003" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=600&q=80"></div><div class="card-content"><div><div class="model-number">126610LV</div><h2 class="card-title">Submariner Date</h2><p class="card-specs">蠔式，41毫米，蠔式鋼<br>綠黑Cerachrom陶質外圈</p></div><div class="card-footer"><span class="price">HKD 96,200</span><a href="https://www.rolex.com/en-hk/watches/submariner/m126610lv-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&q=80"></div><div class="card-content"><div><div class="model-number">M91450-0001</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑36毫米<br>銀色錶面</p></div><div class="card-footer"><span class="price">HKD 16,400</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91450-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="https://images.unsplash.com/photo-1533139502658-0198f920d8e8?w=600&q=80"></div><div class="card-content"><div><div class="model-number">M7941A1A0NU-0001</div><h2 class="card-title">Black Bay</h2><p class="card-specs">鋼錶殼，直徑41毫米<br>黑色橡膠錶帶</p></div><div class="card-footer"><span class="price">HKD 36,400</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m7941a1a0nu-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&q=80"></div><div class="card-content"><div><div class="model-number">126334</div><h2 class="card-title">Datejust 41</h2><p class="card-specs">蠔式，41毫米，白金及鋼<br>深灰色鑲鑽錶面</p></div><div class="card-footer"><span class="price">HKD 106,200</span><a href="https://www.rolex.com/en-hk/watches/datejust/m126334-0023" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&q=80"></div><div class="card-content"><div><div class="model-number">M7939G1A0NRU-0001</div><h2 class="card-title">Black Bay 58 GMT</h2><p class="card-specs">原廠機芯 MT5450-U，39毫米<br>黑色及酒紅色外圈</p></div><div class="card-footer"><span class="price">HKD 40,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay-58/m7939g1a0nru-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="https://images.unsplash.com/photo-1547996160-81dfa63595aa?w=600&q=80"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>黑色錶面</p></div><div class="card-footer"><span class="price">HKD 136,200</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0007" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="https://images.unsplash.com/photo-1587836374828-4dbafa94cf0e?w=600&q=80"></div><div class="card-content"><div><div class="model-number">126720VTNR</div><h2 class="card-title">GMT-Master II</h2><p class="card-specs">蠔式，40毫米，左面錶冠<br>綠黑雙色外圈</p></div><div class="card-footer"><span class="price">HKD 101,500</span><a href="https://www.rolex.com/en-hk/watches/gmt-master-ii/m126720vtnr-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>薄荷綠錶面</p></div><div class="card-footer"><span class="price">HKD 145,100</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0006" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=600&q=80"></div><div class="card-content"><div><div class="model-number">M79660-0002</div><h2 class="card-title">Black Bay One 39</h2><p class="card-specs">原廠機芯 MT5602，39毫米<br>藍色錶面與鋼錶帶</p></div><div class="card-footer"><span class="price">HKD 35,200</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m79660-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Damiani</span><img src="https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&q=80"></div><div class="card-content"><div><div class="model-number">20084679</div><h2 class="card-title">Margherita</h2><p class="card-specs">黃金及鑽石手鍊<br>花朵和諧輪廓與寶石點綴</p></div><div class="card-footer"><span class="price">Collection</span><a href="https://www.damiani.com/" target="_blank" class="official-link">官方檔案</a></div></div></div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2026 HOROLOGICAL ARCHIVE. ALL RIGHTS RESERVED.</p>
+    </footer>
+</body>
+</html>
