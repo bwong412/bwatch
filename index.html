@@ -16,10 +16,22 @@
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.02em; }
-        header { padding: 100px 5% 60px; text-align: center; border-bottom: 1px solid var(--border-color); background: #141414; }
+        
+        /* 頂部導航與累計總數 */
+        .top-bar { position: absolute; top: 25px; right: 5%; display: flex; align-items: center; gap: 10px; background: rgba(22, 22, 22, 0.8); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 30px; backdrop-filter: blur(10px); }
+        .top-bar .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-secondary); }
+        .top-bar .total-value { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 600; color: var(--accent-color); }
+
+        header { padding: 100px 5% 50px; text-align: center; border-bottom: 1px solid var(--border-color); background: #141414; position: relative; }
         header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; font-weight: 600; margin-bottom: 15px; letter-spacing: 0.15em; color: #fff; }
         header p { color: var(--text-secondary); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.3em; }
-        .container { max-width: 1400px; margin: 0 auto; padding: 80px 5%; }
+
+        /* Filter 按鈕區 */
+        .filter-container { display: flex; justify-content: center; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+        .filter-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 20px; border-radius: 20px; font-size: 0.85rem; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .filter-btn:hover, .filter-btn.active { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--bg-color); font-weight: 600; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 60px 5%; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
         .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: 0.4s; }
         .card:hover { transform: translateY(-6px); border-color: var(--text-secondary); }
@@ -34,58 +46,113 @@
         .price { font-size: 1.1rem; font-weight: 600; color: #fff; }
         .official-link { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-primary); text-decoration: none; padding: 8px 16px; border: 1px solid var(--text-primary); transition: 0.3s; }
         .official-link:hover { background-color: var(--text-primary); color: var(--bg-color); }
+        
         footer { text-align: center; padding: 60px 0; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.85rem; }
+
+        @media(max-width: 768px) {
+            .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 20px; width: fit-content; }
+        }
     </style>
 </head>
 <body>
     <header>
+        <div class="top-bar">
+            <span class="label">累計總消費</span>
+            <span class="total-value" id="total-sum">HKD 883,300</span>
+        </div>
         <h1>PERSONAL ARCHIVE</h1>
         <p>時光循妙理，璀璨集琳琅。歲月凝於指，乾坤入華章</p>
+        
+        <!-- Filter 按鈕 -->
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">全部藏品 (13)</button>
+            <button class="filter-btn" data-filter="Rolex">Rolex</button>
+            <button class="filter-btn" data-filter="Tudor">Tudor</button>
+            <button class="filter-btn" data-filter="Damiani">珠寶手鏈</button>
+        </div>
     </header>
+
     <div class="container">
         <div class="grid">
             <!-- 第 1 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="6.jpg"></div><div class="card-content"><div><div class="model-number">M91550-0005</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑39毫米<br>蛋白色及藍色錶面</p></div><div class="card-footer"><span class="price">HKD 17,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91550-0005" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Tudor" data-price="17100"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="6.jpg"></div><div class="card-content"><div><div class="model-number">M91550-0005</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑39毫米<br>蛋白色及藍色錶面</p></div><div class="card-footer"><span class="price">HKD 17,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91550-0005" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 2 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="2.jpg"></div><div class="card-content"><div><div class="model-number">126334</div><h2 class="card-title">Datejust 41</h2><p class="card-specs">蠔式，41毫米，白金及鋼<br>藍色羅馬數字錶面</p></div><div class="card-footer"><span class="price">HKD 86,900</span><a href="https://www.rolex.com/en-hk/watches/datejust/m126334-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="86900"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="2.jpg"></div><div class="card-content"><div><div class="model-number">126334</div><h2 class="card-title">Datejust 41</h2><p class="card-specs">蠔式，41毫米，白金及鋼<br>藍色羅馬數字錶面</p></div><div class="card-footer"><span class="price">HKD 86,900</span><a href="https://www.rolex.com/en-hk/watches/datejust/m126334-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 3 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="1.jpg"></div><div class="card-content"><div><div class="model-number">124300</div><h2 class="card-title">Oyster Perpetual 41</h2><p class="card-specs">蠔式，41毫米，蠔式鋼<br>黑色錶面</p></div><div class="card-footer"><span class="price">HKD 52,300</span><a href="https://www.rolex.com/en-hk/watches/oyster-perpetual/m124300-0003" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="52300"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="1.jpg"></div><div class="card-content"><div><div class="model-number">124300</div><h2 class="card-title">Oyster Perpetual 41</h2><p class="card-specs">蠔式，41毫米，蠔式鋼<br>黑色錶面</p></div><div class="card-footer"><span class="price">HKD 52,300</span><a href="https://www.rolex.com/en-hk/watches/oyster-perpetual/m124300-0003" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 4 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="7.jpg"></div><div class="card-content"><div><div class="model-number">126610LV</div><h2 class="card-title">Submariner Date</h2><p class="card-specs">蠔式，41毫米，蠔式鋼<br>綠黑Cerachrom陶質外圈</p></div><div class="card-footer"><span class="price">HKD 96,200</span><a href="https://www.rolex.com/en-hk/watches/submariner/m126610lv-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="96200"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="7.jpg"></div><div class="card-content"><div><div class="model-number">126610LV</div><h2 class="card-title">Submariner Date</h2><p class="card-specs">蠔式，41毫米，蠔式鋼<br>綠黑Cerachrom陶質外圈</p></div><div class="card-footer"><span class="price">HKD 96,200</span><a href="https://www.rolex.com/en-hk/watches/submariner/m126610lv-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 5 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="4.jpg"></div><div class="card-content"><div><div class="model-number">M91450-0001</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑36毫米<br>銀色錶面</p></div><div class="card-footer"><span class="price">HKD 16,400</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91450-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Tudor" data-price="16400"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="4.jpg"></div><div class="card-content"><div><div class="model-number">M91450-0001</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑36毫米<br>銀色錶面</p></div><div class="card-footer"><span class="price">HKD 16,400</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91450-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 6 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="8.jpg"></div><div class="card-content"><div><div class="model-number">M7941A1A0NU-0001</div><h2 class="card-title">Black Bay</h2><p class="card-specs">鋼錶殼，直徑41毫米<br>黑色橡膠錶帶</p></div><div class="card-footer"><span class="price">HKD 36,400</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m7941a1a0nu-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Tudor" data-price="36400"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="8.jpg"></div><div class="card-content"><div><div class="model-number">M7941A1A0NU-0001</div><h2 class="card-title">Black Bay</h2><p class="card-specs">鋼錶殼，直徑41毫米<br>黑色橡膠錶帶</p></div><div class="card-footer"><span class="price">HKD 36,400</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m7941a1a0nu-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 7 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="5.jpg"></div><div class="card-content"><div><div class="model-number">126334</div><h2 class="card-title">Datejust 41</h2><p class="card-specs">蠔式，41毫米，白金及鋼<br>深灰色鑲鑽錶面</p></div><div class="card-footer"><span class="price">HKD 106,200</span><a href="https://www.rolex.com/en-hk/watches/datejust/m126334-0023" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="106200"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="5.jpg"></div><div class="card-content"><div><div class="model-number">126334</div><h2 class="card-title">Datejust 41</h2><p class="card-specs">蠔式，41毫米，白金及鋼<br>深灰色鑲鑽錶面</p></div><div class="card-footer"><span class="price">HKD 106,200</span><a href="https://www.rolex.com/en-hk/watches/datejust/m126334-0023" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 8 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="10.jpg"></div><div class="card-content"><div><div class="model-number">M7939G1A0NRU-0001</div><h2 class="card-title">Black Bay 58 GMT</h2><p class="card-specs">原廠機芯 MT5450-U，39毫米<br>黑色及酒紅色外圈</p></div><div class="card-footer"><span class="price">HKD 40,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay-58/m7939g1a0nru-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Tudor" data-price="40100"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="10.jpg"></div><div class="card-content"><div><div class="model-number">M7939G1A0NRU-0001</div><h2 class="card-title">Black Bay 58 GMT</h2><p class="card-specs">原廠機芯 MT5450-U，39毫米<br>黑色及酒紅色外圈</p></div><div class="card-footer"><span class="price">HKD 40,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay-58/m7939g1a0nru-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 9 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="3.jpg"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>黑色錶面</p></div><div class="card-footer"><span class="price">HKD 136,200</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0007" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="136200"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="3.jpg"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>黑色錶面</p></div><div class="card-footer"><span class="price">HKD 136,200</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0007" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 10 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="9.jpg"></div><div class="card-content"><div><div class="model-number">126720VTNR</div><h2 class="card-title">GMT-Master II</h2><p class="card-specs">蠔式，40毫米，左面錶冠<br>綠黑雙色外圈</p></div><div class="card-footer"><span class="price">HKD 101,500</span><a href="https://www.rolex.com/en-hk/watches/gmt-master-ii/m126720vtnr-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="101500"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="9.jpg"></div><div class="card-content"><div><div class="model-number">126720VTNR</div><h2 class="card-title">GMT-Master II</h2><p class="card-specs">蠔式，40毫米，左面錶冠<br>綠黑雙色外圈</p></div><div class="card-footer"><span class="price">HKD 101,500</span><a href="https://www.rolex.com/en-hk/watches/gmt-master-ii/m126720vtnr-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 11 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="11.jpg"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>薄荷綠錶面</p></div><div class="card-footer"><span class="price">HKD 145,100</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0006" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="145100"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="11.jpg"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>薄荷綠錶面</p></div><div class="card-footer"><span class="price">HKD 145,100</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0006" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 12 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="12.jpg"></div><div class="card-content"><div><div class="model-number">M79660-0002</div><h2 class="card-title">Black Bay One 39</h2><p class="card-specs">原廠機芯 MT5602，39毫米<br>藍色錶面與鋼錶帶</p></div><div class="card-footer"><span class="price">HKD 35,200</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m79660-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Tudor" data-price="35200"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="12.jpg"></div><div class="card-content"><div><div class="model-number">M79660-0002</div><h2 class="card-title">Black Bay One 39</h2><p class="card-specs">原廠機芯 MT5602，39毫米<br>藍色錶面與鋼錶帶</p></div><div class="card-footer"><span class="price">HKD 35,200</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m79660-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
-            <!-- 第 13 隻錶 -->
-            <div class="card"><div class="card-image-wrapper"><span class="brand-tag">Damiani</span><img src="13.jpg"></div><div class="card-content"><div><div class="model-number">20084679</div><h2 class="card-title">Margherita</h2><p class="card-specs">黃金及鑽石手鍊<br>花朵和諧輪廓與寶石點綴</p></div><div class="card-footer"><span class="price">HKD 13,700</span><a href="https://www.damiani.com/zh_hk/pink-gold-and-diamonds-bracelet-20084679" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <!-- 第 13 隻 (Damiani) -->
+            <div class="card" data-category="Damiani" data-price="13700"><div class="card-image-wrapper"><span class="brand-tag">Damiani</span><img src="13.jpg"></div><div class="card-content"><div><div class="model-number">20084679</div><h2 class="card-title">Margherita</h2><p class="card-specs">黃金及鑽石手鍊<br>花朵和諧輪廓與寶石點綴</p></div><div class="card-footer"><span class="price">HKD 13,700</span><a href="https://www.damiani.com/zh_hk/pink-gold-and-diamonds-bracelet-20084679" target="_blank" class="official-link">官方檔案</a></div></div></div>
         </div>
     </div>
+    
     <footer>
         <p>&copy; 2026 HOROLOGICAL ARCHIVE. ALL RIGHTS RESERVED.</p>
     </footer>
+
+    <script>
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards = document.querySelectorAll('.card');
+        const totalSumEl = document.getElementById('total-sum');
+
+        function formatMoney(amount) {
+            return 'HKD ' + amount.toLocaleString();
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // 改變按鈕 active 樣式
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.getAttribute('data-filter');
+                let currentTotal = 0;
+
+                cards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    const price = parseInt(card.getAttribute('data-price'));
+
+                    if (filter === 'all' || category === filter) {
+                        card.style.display = 'flex';
+                        currentTotal += price;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // 動態更新右上角的累計總消費
+                totalSumEl.textContent = formatMoney(currentTotal);
+            });
+        });
+    </script>
 </body>
 </html>
