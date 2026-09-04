@@ -17,10 +17,12 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.02em; }
         
-        /* 頂部導航與累計總數 */
-        .top-bar { position: absolute; top: 25px; right: 5%; display: flex; align-items: center; gap: 10px; background: rgba(22, 22, 22, 0.8); border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 30px; backdrop-filter: blur(10px); }
-        .top-bar .label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-secondary); }
-        .top-bar .total-value { font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 600; color: var(--accent-color); }
+        /* 頂部導航與累計總數 / 里數 */
+        .top-bar { position: absolute; top: 25px; right: 5%; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; background: rgba(22, 22, 22, 0.8); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 16px; backdrop-filter: blur(10px); }
+        .stat-row { display: flex; align-items: center; gap: 8px; }
+        .top-bar .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-secondary); }
+        .top-bar .total-value { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--accent-color); }
+        .top-bar .total-miles { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600; color: #4cd137; }
 
         header { padding: 100px 5% 50px; text-align: center; border-bottom: 1px solid var(--border-color); background: #141414; position: relative; }
         header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; font-weight: 600; margin-bottom: 15px; letter-spacing: 0.15em; color: #fff; }
@@ -50,15 +52,21 @@
         footer { text-align: center; padding: 60px 0; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.85rem; }
 
         @media(max-width: 768px) {
-            .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 20px; width: fit-content; }
+            .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 20px; width: fit-content; align-items: center; }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="top-bar">
-            <span class="label">累計總消費</span>
-            <span class="total-value" id="total-sum">HKD 883,300</span>
+            <div class="stat-row">
+                <span class="label">累計總消費</span>
+                <span class="total-value" id="total-sum">HKD 883,300</span>
+            </div>
+            <div class="stat-row">
+                <span class="label">累計總里數</span>
+                <span class="total-miles" id="total-miles">113,724.8 里</span>
+            </div>
         </div>
         <h1>PERSONAL ARCHIVE</h1>
         <p>時光循妙理，璀璨集琳琅。歲月凝於指，乾坤入華章</p>
@@ -123,14 +131,20 @@
         const filterBtns = document.querySelectorAll('.filter-btn');
         const cards = document.querySelectorAll('.card');
         const totalSumEl = document.getElementById('total-sum');
+        const totalMilesEl = document.getElementById('total-miles');
 
         function formatMoney(amount) {
             return 'HKD ' + amount.toLocaleString();
         }
 
+        function formatMiles(amount) {
+            // 計算公式：金額 * 1.03 / 8，保留1位小數
+            const miles = (amount * 1.03) / 8;
+            return miles.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' 里';
+        }
+
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
-                // 改變按鈕 active 樣式
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
 
@@ -149,8 +163,9 @@
                     }
                 });
 
-                // 動態更新右上角的累計總消費
+                // 動態更新右上角的消費總數與里數
                 totalSumEl.textContent = formatMoney(currentTotal);
+                totalMilesEl.textContent = formatMiles(currentTotal);
             });
         });
     </script>
