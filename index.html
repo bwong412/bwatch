@@ -40,34 +40,35 @@
 
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 5%; }
         
-        /* 1. 全部網格模式 (Grid View - 有文字 Info) */
+        /* 1. 全部網格模式 (Grid View) */
         .grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 30px; }
         .grid-view .card { display: flex; flex-direction: column; justify-content: space-between; }
-        .grid-view .slider-img-only { display: none; } /* 網格模式隱藏純圖卡片 */
+        .grid-view .slider-img-only { display: none !important; }
 
-        /* 2. 滑動大圖模式 (Carousel View - Only 圖片，大圓角，Cover Flow 效果) */
+        /* 2. 3D 弧形旋轉滑動大圖模式 (3D Cover Flow View) */
         .carousel-view { 
             display: flex; 
             width: 100%; 
             overflow-x: auto; 
             scroll-snap-type: x mandatory; 
-            gap: 30px; 
-            padding: 50px 25% 70px; 
+            gap: 40px; 
+            padding: 80px 30% 100px; 
             scrollbar-width: none; 
             align-items: center; 
+            perspective: 1200px; /* 3D 空間透視度 */
         }
         .carousel-view::-webkit-scrollbar { display: none; }
-        .carousel-view .grid-card-item { display: none; } /* 滑動模式隱格詳細網格卡片 */
+        .carousel-view .grid-card-item { display: none !important; }
 
-        /* 純圖片滑動卡片樣式 */
+        /* 純圖片 3D 旋轉卡片樣式 */
         .slider-img-only {
-            min-width: 320px;
+            min-width: 340px;
             max-width: 380px;
-            height: 520px;
+            height: 500px;
             background: #161616;
             border: 1px solid var(--border-color);
-            border-radius: 28px; /* 大圓角 */
-            overflow: hidden;
+            border-radius: 32px;
+            overflow: visible;
             scroll-snap-align: center;
             flex-shrink: 0;
             display: flex;
@@ -75,21 +76,9 @@
             justify-content: center;
             padding: 40px;
             position: relative;
-            transform: scale(0.82);
-            opacity: 0.4;
-            filter: brightness(0.7);
-            transition: transform 0.5s cubic-bezier(0.1, 0.8, 0.1, 1), opacity 0.5s ease, filter 0.5s ease;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
-        }
-
-        /* 中間聚焦的高級大圖 */
-        .slider-img-only.active-slide {
-            transform: scale(1.08);
-            opacity: 1;
-            filter: brightness(1);
-            border-color: var(--accent-color);
-            z-index: 5;
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8), 0 0 20px rgba(197, 160, 89, 0.2);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out, filter 0.3s ease, opacity 0.3s ease;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
         }
 
         .slider-img-only img {
@@ -97,6 +86,7 @@
             max-height: 100%;
             object-fit: contain;
             filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+            pointer-events: none;
         }
 
         .slider-img-only .brand-tag {
@@ -107,7 +97,7 @@
             text-transform: uppercase;
             letter-spacing: 0.2em;
             color: var(--text-secondary);
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             padding: 6px 12px;
             border-radius: 10px;
         }
@@ -131,8 +121,8 @@
 
         @media(max-width: 768px) {
             .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 15px; width: fit-content; align-items: flex-end; }
-            .carousel-view { padding: 40px 10% 60px; }
-            .slider-img-only { min-width: 75vw; height: 420px; }
+            .carousel-view { padding: 60px 10% 80px; }
+            .slider-img-only { min-width: 75vw; height: 400px; }
         }
     </style>
 </head>
@@ -167,7 +157,7 @@
     </header>
 
     <div class="container">
-        <!-- 主顯示區域（預設 carousel-view） -->
+        <!-- 主顯示區域 -->
         <div class="carousel-view" id="main-display-area">
             
             <!-- 項目 1 -->
@@ -294,10 +284,8 @@
 
         function updateDisplay() {
             const isCarousel = displayArea.classList.contains('carousel-view');
-            const items = displayArea.querySelectorAll(isCarousel ? '.slider-img-only' : '.grid-card-item');
             let currentTotal = 0;
 
-            // 同步隱藏/顯示對應模式的元素
             displayArea.querySelectorAll('.grid-card-item, .slider-img-only').forEach(el => {
                 const category = el.getAttribute('data-category');
                 const price = parseInt(el.getAttribute('data-price'));
@@ -315,7 +303,6 @@
                 }
             });
 
-            // 總額除以2因為每件藏品有兩套DOM（網格同滑動各一）
             const realTotal = currentTotal / 2;
             totalSumEl.textContent = formatMoney(realTotal);
             totalMilesEl.textContent = formatMiles(realTotal);
@@ -334,7 +321,7 @@
             });
         });
 
-        // 封面流 Cover Flow 互動特效
+        // 3D 弧形旋轉封面流引擎 (Cover Flow 3D RotateY)
         function setupCoverFlow() {
             const container = displayArea;
             if (!container.classList.contains('carousel-view')) return;
@@ -348,12 +335,29 @@
                 cards.forEach(card => {
                     const cardRect = card.getBoundingClientRect();
                     const cardCenter = cardRect.left + cardRect.width / 2;
-                    const distance = Math.abs(containerCenter - cardCenter);
+                    const offset = containerCenter - cardCenter; // 距離中心嘅偏離值
+                    
+                    // 限制旋轉角度同縮放
+                    let rotateY = offset * 0.08; // 左右旋轉角度
+                    if (rotateY > 45) rotateY = 45;
+                    if (rotateY < -45) rotateY = -45;
 
-                    if (distance < 220) {
-                        card.classList.add('active-slide');
+                    const absOffset = Math.abs(offset);
+                    const scale = Math.max(0.75, 1 - absOffset / 800); // 越旁邊越縮細
+                    const opacity = Math.max(0.3, 1 - absOffset / 700); // 越旁邊越暗
+
+                    if (absOffset < 150) {
+                        // 中間正前方，完全正面毫無變形
+                        card.style.transform = `scale(1.05) rotateY(0deg)`;
+                        card.style.opacity = `1`;
+                        card.style.filter = `brightness(1)`;
+                        card.style.zIndex = `10`;
                     } else {
-                        card.classList.remove('active-slide');
+                        // 左右兩側，向著中心旋轉並縮細
+                        card.style.transform = `scale(${scale}) rotateY(${rotateY}deg)`;
+                        card.style.opacity = `${opacity}`;
+                        card.style.filter = `brightness(${0.4 + opacity * 0.6})`;
+                        card.style.zIndex = `1`;
                     }
                 });
             }
@@ -363,7 +367,6 @@
             handleScroll();
         }
 
-        // 初始化執行一次
         updateTrigger();
         function updateTrigger() {
             updateDisplay();
