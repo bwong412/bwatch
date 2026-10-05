@@ -45,40 +45,41 @@
         .grid-view .card { display: flex; flex-direction: column; justify-content: space-between; }
         .grid-view .slider-img-only { display: none !important; }
 
-        /* 2. 3D 弧形旋轉滑動大圖模式 (3D Cover Flow View) */
+        /* 2. 3D 緊密排列旋轉滑動大圖模式 (Cover Flow) */
         .carousel-view { 
             display: flex; 
             width: 100%; 
             overflow-x: auto; 
             scroll-snap-type: x mandatory; 
-            gap: 40px; 
-            padding: 80px 30% 100px; 
+            gap: 15px; /* 縮小卡片之間嘅間距，令其更緊密 */
+            padding: 80px 35% 100px; /* 增加左右留白，令頭尾卡片可以順暢聚落中間 */
             scrollbar-width: none; 
             align-items: center; 
-            perspective: 1200px; /* 3D 空間透視度 */
+            perspective: 1400px; 
         }
         .carousel-view::-webkit-scrollbar { display: none; }
         .carousel-view .grid-card-item { display: none !important; }
 
-        /* 純圖片 3D 旋轉卡片樣式 */
+        /* 純圖片緊密 3D 旋轉卡片樣式 */
         .slider-img-only {
-            min-width: 340px;
-            max-width: 380px;
-            height: 500px;
+            min-width: 280px;  /* 稍微收窄闊度，令排列更密 */
+            max-width: 320px;
+            height: 440px;
             background: #161616;
             border: 1px solid var(--border-color);
-            border-radius: 32px;
+            border-radius: 24px;
             overflow: visible;
             scroll-snap-align: center;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            padding: 30px;
             position: relative;
             transform-style: preserve-3d;
             transition: transform 0.1s ease-out, filter 0.3s ease, opacity 0.3s ease;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            margin: 0 -20px; /* 負邊距製造卡片微微重疊嘅高階感 */
         }
 
         .slider-img-only img {
@@ -91,15 +92,15 @@
 
         .slider-img-only .brand-tag {
             position: absolute;
-            top: 24px;
-            left: 24px;
-            font-size: 0.75rem;
+            top: 20px;
+            left: 20px;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.2em;
             color: var(--text-secondary);
             background: rgba(0,0,0,0.5);
-            padding: 6px 12px;
-            border-radius: 10px;
+            padding: 4px 10px;
+            border-radius: 8px;
         }
 
         /* 網格模式卡片樣式 */
@@ -121,8 +122,8 @@
 
         @media(max-width: 768px) {
             .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 15px; width: fit-content; align-items: flex-end; }
-            .carousel-view { padding: 60px 10% 80px; }
-            .slider-img-only { min-width: 75vw; height: 400px; }
+            .carousel-view { padding: 60px 15% 80px; gap: 10px; }
+            .slider-img-only { min-width: 65vw; height: 360px; margin: 0 -15px; }
         }
     </style>
 </head>
@@ -335,28 +336,25 @@
                 cards.forEach(card => {
                     const cardRect = card.getBoundingClientRect();
                     const cardCenter = cardRect.left + cardRect.width / 2;
-                    const offset = containerCenter - cardCenter; // 距離中心嘅偏離值
+                    const offset = containerCenter - cardCenter;
                     
-                    // 限制旋轉角度同縮放
-                    let rotateY = offset * 0.08; // 左右旋轉角度
-                    if (rotateY > 45) rotateY = 45;
-                    if (rotateY < -45) rotateY = -45;
+                    let rotateY = offset * 0.1; // 稍微加大旋轉角度，更貼近環形包圍感
+                    if (rotateY > 50) rotateY = 50;
+                    if (rotateY < -50) rotateY = -50;
 
                     const absOffset = Math.abs(offset);
-                    const scale = Math.max(0.75, 1 - absOffset / 800); // 越旁邊越縮細
-                    const opacity = Math.max(0.3, 1 - absOffset / 700); // 越旁邊越暗
+                    const scale = Math.max(0.7, 1 - absOffset / 700);
+                    const opacity = Math.max(0.25, 1 - absOffset / 600);
 
-                    if (absOffset < 150) {
-                        // 中間正前方，完全正面毫無變形
-                        card.style.transform = `scale(1.05) rotateY(0deg)`;
+                    if (absOffset < 120) {
+                        card.style.transform = `scale(1.08) rotateY(0deg)`;
                         card.style.opacity = `1`;
                         card.style.filter = `brightness(1)`;
                         card.style.zIndex = `10`;
                     } else {
-                        // 左右兩側，向著中心旋轉並縮細
                         card.style.transform = `scale(${scale}) rotateY(${rotateY}deg)`;
                         card.style.opacity = `${opacity}`;
-                        card.style.filter = `brightness(${0.4 + opacity * 0.6})`;
+                        card.style.filter = `brightness(${0.3 + opacity * 0.7})`;
                         card.style.zIndex = `1`;
                     }
                 });
