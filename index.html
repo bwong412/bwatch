@@ -15,10 +15,10 @@
             --border-color: #2a2a2a;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.02em; }
+        body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.02em; overflow-x: hidden; }
         
         /* 頂部導航與累計總數 / 里數 */
-        .top-bar { position: absolute; top: 25px; right: 5%; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; background: rgba(22, 22, 22, 0.8); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 16px; backdrop-filter: blur(10px); }
+        .top-bar { position: absolute; top: 25px; right: 5%; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; background: rgba(22, 22, 22, 0.8); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 16px; backdrop-filter: blur(10px); z-index: 10; }
         .stat-row { display: flex; align-items: center; gap: 8px; }
         .top-bar .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-secondary); }
         .top-bar .total-value { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--accent-color); }
@@ -28,13 +28,29 @@
         header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; font-weight: 600; margin-bottom: 15px; letter-spacing: 0.15em; color: #fff; }
         header p { color: var(--text-secondary); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.3em; }
 
+        /* 模式切換按鈕區 */
+        .mode-switch-container { margin-top: 25px; display: flex; justify-content: center; gap: 10px; }
+        .mode-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 16px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
+        .mode-btn.active { background: var(--text-primary); color: var(--bg-color); font-weight: 600; border-color: var(--text-primary); }
+
         /* Filter 按鈕區 */
-        .filter-container { display: flex; justify-content: center; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+        .filter-container { display: flex; justify-content: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
         .filter-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 20px; border-radius: 20px; font-size: 0.85rem; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .filter-btn:hover, .filter-btn.active { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--bg-color); font-weight: 600; }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 60px 5%; }
+        
+        /* 預設網格模式 (Grid View) */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
+        
+        /* 左右滑動模式 (Carousel View) */
+        .carousel-container { display: none; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; gap: 30px; padding: 20px 0 40px; scrollbar-width: thin; scrollbar-color: var(--accent-color) var(--border-color); }
+        .carousel-container::-webkit-scrollbar { height: 8px; }
+        .carousel-container::-webkit-scrollbar-track { background: var(--border-color); border-radius: 4px; }
+        .carousel-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
+        
+        .carousel-container .card { min-width: 400px; max-width: 450px; scroll-snap-align: center; flex-shrink: 0; }
+
         .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: 0.4s; }
         .card:hover { transform: translateY(-6px); border-color: var(--text-secondary); }
         .card-image-wrapper { width: 100%; height: 320px; background-color: #1a1a1a; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
@@ -53,6 +69,7 @@
 
         @media(max-width: 768px) {
             .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 20px; width: fit-content; align-items: center; }
+            .carousel-container .card { min-width: 85vw; }
         }
     </style>
 </head>
@@ -71,6 +88,12 @@
         <h1>PERSONAL ARCHIVE</h1>
         <p>時光循妙理，璀璨集琳琅。歲月凝於指，乾坤入華章</p>
         
+        <!-- 顯示模式切換 -->
+        <div class="mode-switch-container">
+            <button class="mode-btn active" id="btn-grid">全圖網格 (Grid)</button>
+            <button class="mode-btn" id="btn-carousel">滑動大圖 (Slider)</button>
+        </div>
+
         <!-- Filter 按鈕 -->
         <div class="filter-container">
             <button class="filter-btn active" data-filter="all">全部藏品 (13)</button>
@@ -81,7 +104,8 @@
     </header>
 
     <div class="container">
-        <div class="grid">
+        <!-- 網格模式容器 -->
+        <div class="grid" id="main-display-area">
             <!-- 第 1 隻錶 -->
             <div class="card" data-category="Tudor" data-price="17100"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="6.jpg"></div><div class="card-content"><div><div class="model-number">M91550-0005</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑39毫米<br>蛋白色及藍色錶面</p></div><div class="card-footer"><span class="price">HKD 17,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91550-0005" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
@@ -113,7 +137,7 @@
             <div class="card" data-category="Rolex" data-price="101500"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="9.jpg"></div><div class="card-content"><div><div class="model-number">126720VTNR</div><h2 class="card-title">GMT-Master II</h2><p class="card-specs">蠔式，40毫米，左面錶冠<br>綠黑雙色外圈</p></div><div class="card-footer"><span class="price">HKD 101,500</span><a href="https://www.rolex.com/en-hk/watches/gmt-master-ii/m126720vtnr-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 11 隻錶 -->
-            <div class="card" data-category="Rolex" data-price="145100"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="11.jpg"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>薄荷綠錶面</p></div><div class="card-footer"><span class="price">HKD 145,100</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0006" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="145100"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="1px"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>薄荷綠錶面</p></div><div class="card-footer"><span class="price">HKD 145,100</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0006" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 12 隻錶 -->
             <div class="card" data-category="Tudor" data-price="35200"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="12.jpg"></div><div class="card-content"><div><div class="model-number">M79660-0002</div><h2 class="card-title">Black Bay One 39</h2><p class="card-specs">原廠機芯 MT5602，39毫米<br>藍色錶面與鋼錶帶</p></div><div class="card-footer"><span class="price">HKD 35,200</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m79660-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
@@ -129,43 +153,65 @@
 
     <script>
         const filterBtns = document.querySelectorAll('.filter-btn');
-        const cards = document.querySelectorAll('.card');
         const totalSumEl = document.getElementById('total-sum');
         const totalMilesEl = document.getElementById('total-miles');
+        const btnGrid = document.getElementById('btn-grid');
+        const btnCarousel = document.getElementById('btn-carousel');
+        const displayArea = document.getElementById('main-display-area');
+
+        let currentFilter = 'all';
 
         function formatMoney(amount) {
             return 'HKD ' + amount.toLocaleString();
         }
 
         function formatMiles(amount) {
-            // 計算公式：金額 * 1.03 / 8，保留1位小數
             const miles = (amount * 1.03) / 8;
             return miles.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' 里';
+        }
+
+        // 切換排版模式 (Grid vs Carousel)
+        btnGrid.addEventListener('click', () => {
+            btnGrid.classList.add('active');
+            btnCarousel.classList.remove('active');
+            displayArea.className = 'grid';
+            updateDisplay();
+        });
+
+        btnCarousel.addEventListener('click', () => {
+            btnCarousel.classList.add('active');
+            btnGrid.classList.remove('active');
+            displayArea.className = 'carousel-container';
+            updateDisplay();
+        });
+
+        // 核心更新邏輯（結合 Filter 同模式）
+        function updateDisplay() {
+            const cards = displayArea.querySelectorAll('.card');
+            let currentTotal = 0;
+
+            cards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const price = parseInt(card.getAttribute('data-price'));
+
+                if (currentFilter === 'all' || category === currentFilter) {
+                    card.style.display = 'flex';
+                    currentTotal += price;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            totalSumEl.textContent = formatMoney(currentTotal);
+            totalMilesEl.textContent = formatMiles(currentTotal);
         }
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
-
-                const filter = btn.getAttribute('data-filter');
-                let currentTotal = 0;
-
-                cards.forEach(card => {
-                    const category = card.getAttribute('data-category');
-                    const price = parseInt(card.getAttribute('data-price'));
-
-                    if (filter === 'all' || category === filter) {
-                        card.style.display = 'flex';
-                        currentTotal += price;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-
-                // 動態更新右上角的消費總數與里數
-                totalSumEl.textContent = formatMoney(currentTotal);
-                totalMilesEl.textContent = formatMiles(currentTotal);
+                currentFilter = btn.getAttribute('data-filter');
+                updateDisplay();
             });
         });
     </script>
