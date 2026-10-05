@@ -41,15 +41,15 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 60px 5%; }
         
         /* 預設網格模式 (Grid View) */
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
+        .grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
         
         /* 左右滑動模式 (Carousel View) */
-        .carousel-container { display: none; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; gap: 30px; padding: 20px 0 40px; scrollbar-width: thin; scrollbar-color: var(--accent-color) var(--border-color); }
-        .carousel-container::-webkit-scrollbar { height: 8px; }
-        .carousel-container::-webkit-scrollbar-track { background: var(--border-color); border-radius: 4px; }
-        .carousel-container::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
+        .carousel-view { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; gap: 30px; padding: 20px 0 40px; scrollbar-width: thin; scrollbar-color: var(--accent-color) var(--border-color); }
+        .carousel-view::-webkit-scrollbar { height: 8px; }
+        .carousel-view::-webkit-scrollbar-track { background: var(--border-color); border-radius: 4px; }
+        .carousel-view::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
         
-        .carousel-container .card { min-width: 400px; max-width: 450px; scroll-snap-align: center; flex-shrink: 0; }
+        .carousel-view .card { min-width: 400px; max-width: 450px; scroll-snap-align: center; flex-shrink: 0; }
 
         .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: 0.4s; }
         .card:hover { transform: translateY(-6px); border-color: var(--text-secondary); }
@@ -69,7 +69,7 @@
 
         @media(max-width: 768px) {
             .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 20px; width: fit-content; align-items: center; }
-            .carousel-container .card { min-width: 85vw; }
+            .carousel-view .card { min-width: 85vw; }
         }
     </style>
 </head>
@@ -82,7 +82,7 @@
             </div>
             <div class="stat-row">
                 <span class="label">累計總里數</span>
-                <span class="total-miles" id="total-miles">113,724.8 里</span>
+                <span class="total-miles" id="total-miles">113,724.9 里</span>
             </div>
         </div>
         <h1>PERSONAL ARCHIVE</h1>
@@ -105,7 +105,7 @@
 
     <div class="container">
         <!-- 網格模式容器 -->
-        <div class="grid" id="main-display-area">
+        <div class="grid-view" id="main-display-area">
             <!-- 第 1 隻錶 -->
             <div class="card" data-category="Tudor" data-price="17100"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="6.jpg"></div><div class="card-content"><div><div class="model-number">M91550-0005</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑39毫米<br>蛋白色及藍色錶面</p></div><div class="card-footer"><span class="price">HKD 17,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91550-0005" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
@@ -137,7 +137,7 @@
             <div class="card" data-category="Rolex" data-price="101500"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="9.jpg"></div><div class="card-content"><div><div class="model-number">126720VTNR</div><h2 class="card-title">GMT-Master II</h2><p class="card-specs">蠔式，40毫米，左面錶冠<br>綠黑雙色外圈</p></div><div class="card-footer"><span class="price">HKD 101,500</span><a href="https://www.rolex.com/en-hk/watches/gmt-master-ii/m126720vtnr-0001" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 11 隻錶 -->
-            <div class="card" data-category="Rolex" data-price="145100"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="1px"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>薄荷綠錶面</p></div><div class="card-footer"><span class="price">HKD 145,100</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0006" target="_blank" class="official-link">官方檔案</a></div></div></div>
+            <div class="card" data-category="Rolex" data-price="145100"><div class="card-image-wrapper"><span class="brand-tag">Rolex</span><img src="11.jpg"></div><div class="card-content"><div><div class="model-number">336934</div><h2 class="card-title">Sky-Dweller</h2><p class="card-specs">蠔式，42毫米，白金及鋼<br>薄荷綠錶面</p></div><div class="card-footer"><span class="price">HKD 145,100</span><a href="https://www.rolex.com/en-hk/watches/sky-dweller/m336934-0006" target="_blank" class="official-link">官方檔案</a></div></div></div>
             
             <!-- 第 12 隻錶 -->
             <div class="card" data-category="Tudor" data-price="35200"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="12.jpg"></div><div class="card-content"><div><div class="model-number">M79660-0002</div><h2 class="card-title">Black Bay One 39</h2><p class="card-specs">原廠機芯 MT5602，39毫米<br>藍色錶面與鋼錶帶</p></div><div class="card-footer"><span class="price">HKD 35,200</span><a href="https://www.tudorwatch.com/zh-hant/watches/black-bay/m79660-0002" target="_blank" class="official-link">官方檔案</a></div></div></div>
@@ -174,18 +174,18 @@
         btnGrid.addEventListener('click', () => {
             btnGrid.classList.add('active');
             btnCarousel.classList.remove('active');
-            displayArea.className = 'grid';
+            displayArea.className = 'grid-view';
             updateDisplay();
         });
 
         btnCarousel.addEventListener('click', () => {
             btnCarousel.classList.add('active');
             btnGrid.classList.remove('active');
-            displayArea.className = 'carousel-container';
+            displayArea.className = 'carousel-view';
             updateDisplay();
         });
 
-        // 核心更新邏輯（結合 Filter 同模式）
+        // 核心更新邏輯
         function updateDisplay() {
             const cards = displayArea.querySelectorAll('.card');
             let currentTotal = 0;
