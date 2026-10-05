@@ -17,59 +17,78 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.02em; overflow-x: hidden; }
         
-        /* 頂部導航與累計總數 / 里數 */
-        .top-bar { position: absolute; top: 25px; right: 5%; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; background: rgba(22, 22, 22, 0.8); border: 1px solid var(--border-color); padding: 12px 20px; border-radius: 16px; backdrop-filter: blur(10px); z-index: 10; }
-        .stat-row { display: flex; align-items: center; gap: 8px; }
-        .top-bar .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-secondary); }
-        .top-bar .total-value { font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--accent-color); }
-        .top-bar .total-miles { font-family: 'Cinzel', serif; font-size: 0.95rem; font-weight: 600; color: #4cd137; }
+        /* 1. 右上角設定 / 統計，縮細精緻化 */
+        .top-bar { position: absolute; top: 20px; right: 4%; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; background: rgba(22, 22, 22, 0.7); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 12px; backdrop-filter: blur(10px); z-index: 10; }
+        .stat-row { display: flex; align-items: center; gap: 6px; }
+        .top-bar .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); }
+        .top-bar .total-value { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; color: var(--accent-color); }
+        .top-bar .total-miles { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; color: #4cd137; }
 
-        header { padding: 100px 5% 50px; text-align: center; border-bottom: 1px solid var(--border-color); background: #141414; position: relative; }
-        header h1 { font-family: 'Cinzel', serif; font-size: 2.5rem; font-weight: 600; margin-bottom: 15px; letter-spacing: 0.15em; color: #fff; }
-        header p { color: var(--text-secondary); font-size: 1rem; text-transform: uppercase; letter-spacing: 0.3em; }
+        header { padding: 90px 5% 40px; text-align: center; border-bottom: 1px solid var(--border-color); background: #141414; position: relative; }
+        header h1 { font-family: 'Cinzel', serif; font-size: 2.3rem; font-weight: 600; margin-bottom: 10px; letter-spacing: 0.15em; color: #fff; }
+        header p { color: var(--text-secondary); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.25em; }
 
         /* 模式切換按鈕區 */
-        .mode-switch-container { margin-top: 25px; display: flex; justify-content: center; gap: 10px; }
-        .mode-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 16px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; transition: 0.3s; }
+        .mode-switch-container { margin-top: 20px; display: flex; justify-content: center; gap: 8px; }
+        .mode-btn { background: rgba(255,255,255,0.05); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 5px 14px; border-radius: 12px; font-size: 0.75rem; cursor: pointer; transition: 0.3s; }
         .mode-btn.active { background: var(--text-primary); color: var(--bg-color); font-weight: 600; border-color: var(--text-primary); }
 
         /* Filter 按鈕區 */
-        .filter-container { display: flex; justify-content: center; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
-        .filter-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px 20px; border-radius: 20px; font-size: 0.85rem; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
+        .filter-container { display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
+        .filter-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 6px 16px; border-radius: 16px; font-size: 0.8rem; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
         .filter-btn:hover, .filter-btn.active { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--bg-color); font-weight: 600; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 60px 5%; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 50px 5%; }
         
         /* 預設網格模式 (Grid View) */
         .grid-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 40px; }
         
-        /* 左右滑動模式 (Carousel View) */
-        .carousel-view { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; gap: 30px; padding: 20px 0 40px; scrollbar-width: thin; scrollbar-color: var(--accent-color) var(--border-color); }
-        .carousel-view::-webkit-scrollbar { height: 8px; }
-        .carousel-view::-webkit-scrollbar-track { background: var(--border-color); border-radius: 4px; }
-        .carousel-view::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 4px; }
+        /* 2. 仿 Apple / 小紅書風格的滑動大圖模式 (Carousel Cover-flow) */
+        .carousel-view { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; gap: 20px; padding: 40px 15% 60px; scrollbar-width: none; align-items: center; }
+        .carousel-view::-webkit-scrollbar { display: none; }
         
-        .carousel-view .card { min-width: 400px; max-width: 450px; scroll-snap-align: center; flex-shrink: 0; }
+        .carousel-view .card { 
+            min-width: 380px; 
+            max-width: 420px; 
+            scroll-snap-align: center; 
+            flex-shrink: 0; 
+            border-radius: 20px; /* 大圓角 */
+            transform: scale(0.85); 
+            opacity: 0.5; 
+            transition: transform 0.4s cubic-bezier(0.1, 0.7, 0.1, 1), opacity 0.4s ease;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        
+        /* 當前聚焦的正中間卡片放大並顯眼 */
+        .carousel-view .card.active-slide { 
+            transform: scale(1.05); 
+            opacity: 1; 
+            border-color: var(--accent-color);
+            z-index: 5;
+        }
 
-        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 4px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: 0.4s; }
-        .card:hover { transform: translateY(-6px); border-color: var(--text-secondary); }
-        .card-image-wrapper { width: 100%; height: 320px; background-color: #1a1a1a; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
+        /* 統一卡片基本外觀：圓角、質感 */
+        .card { background-color: var(--card-bg); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; transition: 0.4s; }
+        .grid-view .card:hover { transform: translateY(-6px); border-color: var(--text-secondary); }
+        
+        .card-image-wrapper { width: 100%; height: 300px; background-color: #1a1a1a; display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; }
         .card-image-wrapper img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
-        .brand-tag { position: absolute; top: 20px; left: 20px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-secondary); background: rgba(0,0,0,0.4); padding: 4px 10px; }
-        .card-content { padding: 30px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
-        .model-number { font-size: 0.8rem; color: var(--accent-color); letter-spacing: 0.1em; margin-bottom: 8px; }
-        .card-title { font-size: 1.35rem; font-weight: 600; margin-bottom: 12px; color: #fff; font-family: 'Cinzel', serif; }
-        .card-specs { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px; line-height: 1.6; }
-        .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 20px; margin-top: auto; }
-        .price { font-size: 1.1rem; font-weight: 600; color: #fff; }
-        .official-link { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-primary); text-decoration: none; padding: 8px 16px; border: 1px solid var(--text-primary); transition: 0.3s; }
+        .brand-tag { position: absolute; top: 16px; left: 16px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-secondary); background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: 8px; }
+        
+        .card-content { padding: 25px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; }
+        .model-number { font-size: 0.75rem; color: var(--accent-color); letter-spacing: 0.1em; margin-bottom: 6px; }
+        .card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 10px; color: #fff; font-family: 'Cinzel', serif; }
+        .card-specs { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; line-height: 1.5; }
+        .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: auto; }
+        .price { font-size: 1rem; font-weight: 600; color: #fff; }
+        .official-link { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-primary); text-decoration: none; padding: 6px 14px; border: 1px solid var(--text-primary); border-radius: 8px; transition: 0.3s; }
         .official-link:hover { background-color: var(--text-primary); color: var(--bg-color); }
         
-        footer { text-align: center; padding: 60px 0; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.85rem; }
+        footer { text-align: center; padding: 50px 0; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.8rem; }
 
         @media(max-width: 768px) {
-            .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 20px; width: fit-content; align-items: center; }
-            .carousel-view .card { min-width: 85vw; }
+            .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 15px; width: fit-content; align-items: flex-end; }
+            .carousel-view .card { min-width: 80vw; }
         }
     </style>
 </head>
@@ -90,8 +109,8 @@
         
         <!-- 顯示模式切換 -->
         <div class="mode-switch-container">
-            <button class="mode-btn active" id="btn-grid">全圖網格 (Grid)</button>
-            <button class="mode-btn" id="btn-carousel">滑動大圖 (Slider)</button>
+            <button class="mode-btn active" id="btn-grid">全圖網格</button>
+            <button class="mode-btn" id="btn-carousel">滑動大圖</button>
         </div>
 
         <!-- Filter 按鈕 -->
@@ -104,7 +123,7 @@
     </header>
 
     <div class="container">
-        <!-- 網格模式容器 -->
+        <!-- 顯示區域 -->
         <div class="grid-view" id="main-display-area">
             <!-- 第 1 隻錶 -->
             <div class="card" data-category="Tudor" data-price="17100"><div class="card-image-wrapper"><span class="brand-tag">Tudor</span><img src="6.jpg"></div><div class="card-content"><div><div class="model-number">M91550-0005</div><h2 class="card-title">Tudor 1926</h2><p class="card-specs">鋼錶殼，直徑39毫米<br>蛋白色及藍色錶面</p></div><div class="card-footer"><span class="price">HKD 17,100</span><a href="https://www.tudorwatch.com/zh-hant/watches/1926/m91550-0005" target="_blank" class="official-link">官方檔案</a></div></div></div>
@@ -170,7 +189,7 @@
             return miles.toLocaleString('en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' 里';
         }
 
-        // 切換排版模式 (Grid vs Carousel)
+        // 切換排版模式
         btnGrid.addEventListener('click', () => {
             btnGrid.classList.add('active');
             btnCarousel.classList.remove('active');
@@ -183,6 +202,7 @@
             btnGrid.classList.remove('active');
             displayArea.className = 'carousel-view';
             updateDisplay();
+            setupCoverFlow();
         });
 
         // 核心更新邏輯
@@ -204,6 +224,10 @@
 
             totalSumEl.textContent = formatMoney(currentTotal);
             totalMilesEl.textContent = formatMiles(currentTotal);
+            
+            if(displayArea.classList.contains('carousel-view')) {
+                setupCoverFlow();
+            }
         }
 
         filterBtns.forEach(btn => {
@@ -214,6 +238,36 @@
                 updateDisplay();
             });
         });
+
+        // 實時偵測滑動位置，令未到正中間嘅卡片縮細、兩側靠攏聚焦
+        function setupCoverFlow() {
+            const container = displayArea;
+            if (!container.classList.contains('carousel-view')) return;
+
+            const cards = container.querySelectorAll('.card:not([style*="display: none"])');
+            
+            function handleScroll() {
+                const containerRect = container.getBoundingClientRect();
+                const containerCenter = containerRect.left + containerRect.width / 2;
+
+                cards.forEach(card => {
+                    const cardRect = card.getBoundingClientRect();
+                    const cardCenter = cardRect.left + cardRect.width / 2;
+                    const distance = Math.abs(containerCenter - cardCenter);
+
+                    // 距離中心越近放大越多
+                    if (distance < 250) {
+                        card.classList.add('active-slide');
+                    } else {
+                        card.classList.remove('active-slide');
+                    }
+                });
+            }
+
+            container.removeEventListener('scroll', handleScroll);
+            container.addEventListener('scroll', handleScroll);
+            handleScroll(); // 初始化執行一次
+        }
     </script>
 </body>
 </html>
