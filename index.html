@@ -17,26 +17,39 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--bg-color); color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: 0.02em; overflow-x: hidden; }
         
-        /* 右上角極精細統計 */
-        .top-bar { position: absolute; top: 20px; right: 4%; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; background: rgba(20, 20, 20, 0.7); border: 1px solid var(--border-color); padding: 8px 14px; border-radius: 12px; backdrop-filter: blur(10px); z-index: 10; }
-        .stat-row { display: flex; align-items: center; gap: 6px; }
-        .top-bar .label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-secondary); }
-        .top-bar .total-value { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; color: var(--accent-color); }
-        .top-bar .total-miles { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; color: #4cd137; }
+        /* 右上角迷你設定圖標與隱藏控制面板 */
+        .settings-wrapper { position: absolute; top: 20px; right: 4%; z-index: 100; }
+        .settings-btn { width: 40px; height: 40px; background: rgba(20, 20, 20, 0.8); border: 1px solid var(--border-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(10px); transition: 0.3s; }
+        .settings-btn:hover { border-color: var(--accent-color); transform: scale(1.05); }
+        .settings-btn svg { width: 20px; height: 20px; fill: var(--text-secondary); transition: fill 0.3s; }
+        .settings-btn:hover svg { fill: var(--accent-color); }
+
+        /* 彈出式控制面板 */
+        .settings-panel { position: absolute; top: 50px; right: 0; background: rgba(18, 18, 18, 0.95); border: 1px solid var(--border-color); padding: 16px; border-radius: 16px; backdrop-filter: blur(15px); width: 260px; display: none; flex-direction: column; gap: 14px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); z-index: 101; animation: fadeIn 0.3s ease; }
+        .settings-panel.active { display: flex; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .panel-section { display: flex; flex-direction: column; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+        .panel-section:last-child { border-bottom: none; padding-bottom: 0; }
+        .panel-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--text-secondary); }
+        
+        .stat-row { display: flex; justify-content: space-between; align-items: center; }
+        .stat-label { font-size: 0.75rem; color: var(--text-secondary); }
+        .total-value { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; color: var(--accent-color); }
+        .total-miles { font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 600; color: #4cd137; }
+
+        .panel-btns { display: flex; gap: 6px; }
+        .mode-btn, .filter-btn { background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 5px 10px; border-radius: 8px; font-size: 0.7rem; cursor: pointer; transition: 0.3s; text-align: center; flex: 1; }
+        .filter-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
+        .mode-btn.active, .filter-btn.active { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--bg-color); font-weight: 600; }
 
         header { padding: 90px 5% 30px; text-align: center; border-bottom: 1px solid var(--border-color); background: #111; position: relative; }
         header h1 { font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 600; margin-bottom: 8px; letter-spacing: 0.15em; color: #fff; }
         header p { color: var(--text-secondary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.25em; }
-
-        /* 模式切換按鈕區 */
-        .mode-switch-container { margin-top: 20px; display: flex; justify-content: center; gap: 8px; }
-        .mode-btn { background: rgba(255,255,255,0.04); border: 1px solid var(--border-color); color: var(--text-secondary); padding: 5px 16px; border-radius: 12px; font-size: 0.75rem; cursor: pointer; transition: 0.3s; }
-        .mode-btn.active { background: var(--text-primary); color: var(--bg-color); font-weight: 600; border-color: var(--text-primary); }
-
-        /* Filter 按鈕區 */
-        .filter-container { display: flex; justify-content: center; gap: 10px; margin-top: 15px; flex-wrap: wrap; }
-        .filter-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 5px 16px; border-radius: 16px; font-size: 0.75rem; letter-spacing: 0.1em; cursor: pointer; transition: 0.3s; text-transform: uppercase; }
-        .filter-btn:hover, .filter-btn.active { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--bg-color); font-weight: 600; }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 40px 5%; }
         
@@ -51,8 +64,8 @@
             width: 100%; 
             overflow-x: auto; 
             scroll-snap-type: x mandatory; 
-            gap: 15px; /* 縮小卡片之間嘅間距，令其更緊密 */
-            padding: 80px 35% 100px; /* 增加左右留白，令頭尾卡片可以順暢聚落中間 */
+            gap: 15px; 
+            padding: 80px 35% 100px; 
             scrollbar-width: none; 
             align-items: center; 
             perspective: 1400px; 
@@ -62,7 +75,7 @@
 
         /* 純圖片緊密 3D 旋轉卡片樣式 */
         .slider-img-only {
-            min-width: 280px;  /* 稍微收窄闊度，令排列更密 */
+            min-width: 280px;  
             max-width: 320px;
             height: 440px;
             background: #161616;
@@ -79,7 +92,7 @@
             transform-style: preserve-3d;
             transition: transform 0.1s ease-out, filter 0.3s ease, opacity 0.3s ease;
             box-shadow: 0 25px 50px rgba(0,0,0,0.6);
-            margin: 0 -20px; /* 負邊距製造卡片微微重疊嘅高階感 */
+            margin: 0 -20px;
         }
 
         .slider-img-only img {
@@ -121,7 +134,6 @@
         footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.75rem; }
 
         @media(max-width: 768px) {
-            .top-bar { position: relative; top: 0; right: 0; margin: 0 auto 15px; width: fit-content; align-items: flex-end; }
             .carousel-view { padding: 60px 15% 80px; gap: 10px; }
             .slider-img-only { min-width: 65vw; height: 360px; margin: 0 -15px; }
         }
@@ -129,32 +141,50 @@
 </head>
 <body data-mode="carousel">
     <header>
-        <div class="top-bar">
-            <div class="stat-row">
-                <span class="label">累計總消費</span>
-                <span class="total-value" id="total-sum">HKD 883,300</span>
+        <!-- 右上角迷你設定選單 -->
+        <div class="settings-wrapper">
+            <div class="settings-btn" id="settings-toggle" title="設定與統計">
+                <svg viewBox="0 0 24 24"><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.97 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.97 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L15.44,17.95C15.96,18.34 16.5,18.68 17.13,18.93L17.5,21.58C17.54,21.82 17.75,22 18,22H22C22.25,22 22.46,21.82 22.5,21.58L22.87,18.93C23.5,18.68 24.04,18.34 24.56,17.95L27.05,18.95C27.27,19.03 27.54,18.95 27.66,18.73L29.66,15.27C29.78,15.05 29.72,14.78 29.53,14.63L19.43,12.97Z"/></svg>
             </div>
-            <div class="stat-row">
-                <span class="label">累計總里數</span>
-                <span class="total-miles" id="total-miles">113,724.9 里</span>
+            
+            <div class="settings-panel" id="settings-panel">
+                <!-- 統計數據 -->
+                <div class="panel-section">
+                    <span class="panel-title">Archive Stats</span>
+                    <div class="stat-row">
+                        <span class="stat-label">累計總消費</span>
+                        <span class="total-value" id="total-sum">HKD 883,300</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">累計總里數</span>
+                        <span class="total-miles" id="total-miles">113,724.9 里</span>
+                    </div>
+                </div>
+
+                <!-- 顯示模式切換 -->
+                <div class="panel-section">
+                    <span class="panel-title">View Mode</span>
+                    <div class="panel-btns">
+                        <button class="mode-btn" id="btn-grid">全部網格</button>
+                        <button class="mode-btn active" id="btn-carousel">滑動大圖</button>
+                    </div>
+                </div>
+
+                <!-- 品牌 Filter -->
+                <div class="panel-section">
+                    <span class="panel-title">Filter Collection</span>
+                    <div class="filter-container">
+                        <button class="filter-btn active" data-filter="all">全部 (13)</button>
+                        <button class="filter-btn" data-filter="Rolex">Rolex</button>
+                        <button class="filter-btn" data-filter="Tudor">Tudor</button>
+                        <button class="filter-btn" data-filter="Damiani">珠寶</button>
+                    </div>
+                </div>
             </div>
-        </div>
-        <h1>PERSONAL ARCHIVE</h1>
-        <p>時光循妙理，璀璨集琳琅。歲月凝於指，乾坤入華章</p>
-        
-        <!-- 預設首頁為滑動大圖 -->
-        <div class="mode-switch-container">
-            <button class="mode-btn" id="btn-grid">全部網格</button>
-            <button class="mode-btn active" id="btn-carousel">滑動大圖</button>
         </div>
 
-        <!-- Filter 按鈕 -->
-        <div class="filter-container">
-            <button class="filter-btn active" data-filter="all">全部藏品 (13)</button>
-            <button class="filter-btn" data-filter="Rolex">Rolex</button>
-            <button class="filter-btn" data-filter="Tudor">Tudor</button>
-            <button class="filter-btn" data-filter="Damiani">珠寶手鏈</button>
-        </div>
+        <h1>PERSONAL ARCHIVE</h1>
+        <p>時光循妙理，璀璨集琳琅。歲月凝於指，乾坤入華章</p>
     </header>
 
     <div class="container">
@@ -247,6 +277,8 @@
     </footer>
 
     <script>
+        const settingsToggle = document.getElementById('settings-toggle');
+        const settingsPanel = document.getElementById('settings-panel');
         const filterBtns = document.querySelectorAll('.filter-btn');
         const totalSumEl = document.getElementById('total-sum');
         const totalMilesEl = document.getElementById('total-miles');
@@ -255,6 +287,19 @@
         const displayArea = document.getElementById('main-display-area');
 
         let currentFilter = 'all';
+
+        // 點擊設定圖標展開/收埋面板
+        settingsToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            settingsPanel.classList.toggle('active');
+        });
+
+        // 點擊畫面其他地方自動關閉面板
+        document.addEventListener('click', (e) => {
+            if (!settingsPanel.contains(e.target) && !settingsToggle.contains(e.target)) {
+                settingsPanel.classList.remove('active');
+            }
+        });
 
         function formatMoney(amount) {
             return 'HKD ' + amount.toLocaleString();
@@ -338,7 +383,7 @@
                     const cardCenter = cardRect.left + cardRect.width / 2;
                     const offset = containerCenter - cardCenter;
                     
-                    let rotateY = offset * 0.1; // 稍微加大旋轉角度，更貼近環形包圍感
+                    let rotateY = offset * 0.1;
                     if (rotateY > 50) rotateY = 50;
                     if (rotateY < -50) rotateY = -50;
 
